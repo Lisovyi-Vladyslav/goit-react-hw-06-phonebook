@@ -11,8 +11,8 @@ export function App() {
   
   const contacts = useSelector(state => state.users.contacts);
   const filter = useSelector(state => state.users.filter);
- 
-
+  
+  
 const handleDelete = idx => {
  
 dispatch(

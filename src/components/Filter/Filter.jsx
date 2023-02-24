@@ -1,36 +1,34 @@
 import PropTypes from "prop-types";
 import {usersFilterAction} from 'redux/users.slice';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useDispatch } from 'react-redux';
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 export const Filter = (props) => {
  const dispatch = useDispatch();
 
-  const handleSubmit = (values, actions) => {
-    dispatch(
-      usersFilterAction(values.filter) ,
-    );
-    props.handleContacts()
-        actions.resetForm();
-    };
+  const { register, watch } = useForm({
+    defaultValues: {
+     filter: '',
+    }
+  });
+let filter = watch('filter');
+
   
+  useEffect(() => {
+  dispatch(
+    usersFilterAction(filter),
+    );
+     props.handleContacts()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter])
 
     return (
       <>
-        <Formik
-       initialValues={{ filter: ''}}
-       onSubmit={handleSubmit}
-        >
-                <Form>
-
-            <h2>Filter</h2>
-           <Field type="text" name="filter" />
-           <ErrorMessage name="filter" component="div" />
-           <button type="submit">
-            Submit
-           </button>
-         </Form>   
-     </Formik>
+       <form >
+        <h2>Filter</h2>
+          <input {...register("filter")} type="text" />
+        </form>
       </>
           
     );
